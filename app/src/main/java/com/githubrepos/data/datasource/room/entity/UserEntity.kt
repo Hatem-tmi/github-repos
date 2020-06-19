@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user")
 data class UserEntity(
-    @ColumnInfo(name = "ref")
-    @PrimaryKey val ref: String,
-    @ColumnInfo(name = "thumbnail") var thumbnail: String? = null,
-    @ColumnInfo(name = "price") var price: Float? = null,
-    @ColumnInfo(name = "description") var description: String? = null,
-    @ColumnInfo(name = "title") var title: String? = null
+    @ColumnInfo(name = "username")
+    @PrimaryKey val username: String,
+    @ColumnInfo(name = "avatar") var avatar: String? = null,
+    @ColumnInfo(name = "fullName") var fullName: String,
+    @ColumnInfo(name = "company") var company: String,
+    @ColumnInfo(name = "location") var location: String
 )

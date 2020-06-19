@@ -17,8 +17,8 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(users: List<UserEntity>)
 
-    @Query("DELETE FROM user WHERE ref=:ref")
-    fun remove(ref: String)
+    @Query("DELETE FROM user WHERE username=:username")
+    fun remove(username: String)
 
     @Query("DELETE FROM user")
     fun clear()
@@ -26,6 +26,6 @@ interface UserDao {
     @Query("SELECT * from user")
     fun get(): Single<List<UserEntity>>
 
-    @Query("SELECT * from user WHERE ref = :ref")
-    fun getWithRef(ref: String): Maybe<UserEntity>
+    @Query("SELECT * from user WHERE username = :username")
+    fun getWithRef(username: String): Maybe<UserEntity>
 }

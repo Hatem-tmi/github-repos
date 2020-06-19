@@ -1,6 +1,6 @@
 package com.githubrepos.data.model
 
-data class User(
+data class UserModel(
     val avatar: String?,
     val fullName: String,
     val username: String,
