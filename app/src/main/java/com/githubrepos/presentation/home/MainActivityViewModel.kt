@@ -8,6 +8,7 @@ import com.githubrepos.common.di.qualifier.Worker
 import com.githubrepos.common.util.addTo
 import com.githubrepos.data.datasource.api.dto.ERepository
 import com.githubrepos.data.datasource.api.dto.EUser
+import com.githubrepos.data.model.User
 import com.githubrepos.data.repository.ReposRepository
 import com.githubrepos.data.repository.UserRepository
 import io.reactivex.Scheduler
@@ -27,6 +28,7 @@ class MainActivityViewModel @Inject constructor(
     val disposable = CompositeDisposable()
     val isLoadingLiveData = MutableLiveData<Boolean>()
     val messageLiveData = MutableLiveData<String>()
+    val userLiveData = MutableLiveData<User>()
 
     var currentPage = 1
 
@@ -38,16 +40,17 @@ class MainActivityViewModel @Inject constructor(
                     username = BuildConfig.USERNAME,
                     page = currentPage
                 ),
-                BiFunction<EUser, List<ERepository>, Pair<EUser, List<ERepository>>> { t1, t2 -> t1 to t2 }
+                BiFunction<User, List<ERepository>, Pair<User, List<ERepository>>> { t1, t2 -> t1 to t2 }
             )
             .subscribeOn(worker)
             .observeOn(ui)
             .doOnSubscribe { isLoadingLiveData.value = true }
             .doAfterTerminate { isLoadingLiveData.value = false }
             .subscribe(
-                { (userProfile, repositories) ->
-                    Timber.d(userProfile.toString())
+                { (user, repositories) ->
+                    Timber.d(user.toString())
                     Timber.d(repositories.toString())
+                    userLiveData.value = user
                 },
                 {
                     Timber.e(it)

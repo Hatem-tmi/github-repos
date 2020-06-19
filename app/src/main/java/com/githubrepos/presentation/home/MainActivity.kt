@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), Injectable {
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(
             this, R.layout.activity_main
         )
+        binding.viewModel = viewModel
         setSupportActionBar(binding.toolbar)
 
         nonNullObserve(viewModel.isLoadingLiveData) {
@@ -33,6 +34,9 @@ class MainActivity : AppCompatActivity(), Injectable {
         }
         nonNullObserve(viewModel.messageLiveData) {
             Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
+        }
+        nonNullObserve(viewModel.userLiveData) {
+            binding.user = it
         }
         viewModel.fetchData()
     }
