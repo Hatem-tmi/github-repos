@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.githubrepos.common.di.qualifier.Github
 import com.githubrepos.common.di.scope.PerApplication
-import com.githubrepos.data.datasource.api.GithubApiDataSource
+import com.githubrepos.data.datasource.api.GithubApiSource
 import com.githubrepos.data.datasource.room.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -15,8 +15,8 @@ class DataSourceModule {
 
     @Provides
     @PerApplication
-    fun provideGithubApiDataSource(@Github retrofit: Retrofit): GithubApiDataSource =
-        retrofit.create(GithubApiDataSource::class.java)
+    fun provideGithubApiDataSource(@Github retrofit: Retrofit): GithubApiSource =
+        retrofit.create(GithubApiSource::class.java)
 
     @Provides
     @PerApplication

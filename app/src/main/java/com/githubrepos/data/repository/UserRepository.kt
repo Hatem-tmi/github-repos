@@ -1,6 +1,6 @@
 package com.githubrepos.data.repository
 
-import com.githubrepos.data.datasource.api.GithubApiDataSource
+import com.githubrepos.data.datasource.api.GithubApiSource
 import com.githubrepos.data.datasource.api.toUserModel
 import com.githubrepos.data.datasource.room.AppDatabase
 import com.githubrepos.data.model.UserModel
@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     val appDatabase: AppDatabase,
-    val githubApiDataSource: GithubApiDataSource
+    val githubApiSource: GithubApiSource
 ) {
 
     fun getUserProfile(username: String): Single<UserModel> {
-        return githubApiDataSource.getUserProfile(username)
+        return githubApiSource.getUserProfile(username)
             .map { it.toUserModel() }
     }
 }

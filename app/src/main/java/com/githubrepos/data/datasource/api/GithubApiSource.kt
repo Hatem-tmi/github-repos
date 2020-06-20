@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface GithubApiDataSource {
+interface GithubApiSource {
 
     @GET("users/{user}")
     fun getUserProfile(@Path("user") user: String): Single<EUser>
@@ -15,7 +15,7 @@ interface GithubApiDataSource {
     @GET("users/{user}/repos")
     fun getUserRepositories(
         @Path("user") user: String,
-        @Query("per_page") count: Int,
+        @Query("per_page") perPage: Int,
         @Query("page") page: Int
     ): Single<List<ERepository>>
 }

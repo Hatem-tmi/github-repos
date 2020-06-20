@@ -6,14 +6,11 @@ import com.githubrepos.BuildConfig
 import com.githubrepos.common.di.qualifier.UI
 import com.githubrepos.common.di.qualifier.Worker
 import com.githubrepos.common.util.addTo
-import com.githubrepos.data.model.RepositoryModel
 import com.githubrepos.data.model.UserModel
 import com.githubrepos.data.repository.ReposRepository
 import com.githubrepos.data.repository.UserRepository
 import io.reactivex.Scheduler
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,33 +22,27 @@ class MainActivityViewModel @Inject constructor(
 ) : ViewModel() {
 
     val disposable = CompositeDisposable()
-    val isLoadingLiveData = MutableLiveData<Boolean>()
     val messageLiveData = MutableLiveData<String>()
     val userLiveData = MutableLiveData<UserModel>()
-    val repositoriesLiveData = MutableLiveData<UserModel>()
 
-    var currentPage = 1
+    override fun onCleared() {
+        disposable.clear()
+        super.onCleared()
+    }
+
+    val pagedListLiveData = reposRepository.getUserRepositories(
+        username = BuildConfig.USERNAME,
+        disposable = disposable
+    )
 
     fun fetchData() {
-        Single
-            .zip(
-                userRepository.getUserProfile(username = BuildConfig.USERNAME),
-                reposRepository.getUserRepositories(
-                    username = BuildConfig.USERNAME,
-                    page = currentPage
-                ),
-                BiFunction<UserModel, List<RepositoryModel>, Pair<UserModel, List<RepositoryModel>>> { t1, t2 -> t1 to t2 }
-            )
+        userRepository.getUserProfile(username = BuildConfig.USERNAME)
             .subscribeOn(worker)
             .observeOn(ui)
-            .doOnSubscribe { isLoadingLiveData.value = true }
-            .doAfterTerminate { isLoadingLiveData.value = false }
             .subscribe(
-                { (user, repositories) ->
+                { user ->
                     Timber.d(user.toString())
-                    Timber.d(repositories.toString())
                     userLiveData.value = user
-                    // TODO - update list
                 },
                 {
                     Timber.e(it)

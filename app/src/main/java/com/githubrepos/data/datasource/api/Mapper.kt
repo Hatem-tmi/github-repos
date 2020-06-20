@@ -22,6 +22,6 @@ fun ERepository.toRepositoryModel(): RepositoryModel {
         language = language ?: "",
         name = name ?: "",
         description = description,
-        url = url ?: ""
+        url = htmlUrl ?: ""
     )
 }
