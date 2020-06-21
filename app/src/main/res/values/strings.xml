@@ -1,1 +1,10 @@
-<resources></resources>
+<resources>
+
+    <string name="device_connected">Network is up</string>
+    <string name="device_not_connected">Netork is down</string>
+
+    <string name="remote_fetch_new_items">Fetched %s new items</string>
+    <string name="cache_load_items">Network is unavailable - loaded %s items from cache.</string>
+    <string name="error_message">Error: %s</string>
+
+</resources>

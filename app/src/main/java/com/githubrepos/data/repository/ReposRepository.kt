@@ -8,6 +8,8 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.githubrepos.common.di.qualifier.Worker
+import com.githubrepos.common.di.scope.PerApplication
+import com.githubrepos.common.util.NetworkStateMonitor
 import com.githubrepos.data.datasource.GithubPagingReposDataSource
 import com.githubrepos.data.datasource.api.GithubApiSource
 import com.githubrepos.data.datasource.room.AppDatabase
@@ -16,9 +18,11 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
+@PerApplication
 class ReposRepository @Inject constructor(
     val appDatabase: AppDatabase,
     val githubApiSource: GithubApiSource,
+    val networkStateMonitor: NetworkStateMonitor,
     @Worker val worker: Scheduler,
     @Worker val ui: Scheduler,
     val context: Context
@@ -26,7 +30,7 @@ class ReposRepository @Inject constructor(
 
     fun getUserRepositories(
         username: String,
-        perPageSize: Int = 10,
+        perPageSize: Int = 15,
         prefetchDistance: Int = 3,
         disposable: CompositeDisposable
     ): Pair<LiveData<PagedList<RepositoryModel>>, LiveData<GithubPagingReposDataSource.LoadState>> {
@@ -37,9 +41,12 @@ class ReposRepository @Inject constructor(
             override fun create(): DataSource<Int, RepositoryModel> {
                 return GithubPagingReposDataSource(
                     githubApiSource = githubApiSource,
+                    appDatabase = appDatabase,
+                    networkStateMonitor = networkStateMonitor,
                     username = username,
                     perPageSize = perPageSize,
                     disposable = disposable,
+                    context = context,
                     worker = worker,
                     ui = ui
                 ).also {

@@ -1,8 +1,10 @@
 package com.githubrepos.presentation.home
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.githubrepos.BuildConfig
+import com.githubrepos.R
 import com.githubrepos.common.di.qualifier.UI
 import com.githubrepos.common.di.qualifier.Worker
 import com.githubrepos.common.util.addTo
@@ -18,7 +20,8 @@ class MainActivityViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val reposRepository: ReposRepository,
     @Worker private val worker: Scheduler,
-    @UI private val ui: Scheduler
+    @UI private val ui: Scheduler,
+    private val context: Context
 ) : ViewModel() {
 
     val disposable = CompositeDisposable()
@@ -46,7 +49,7 @@ class MainActivityViewModel @Inject constructor(
                 },
                 {
                     Timber.e(it)
-                    messageLiveData.value = "Error: ${it.message}"
+                    messageLiveData.value = context.getString(R.string.error_message, it.message)
                 }
             )
             .addTo(disposable)

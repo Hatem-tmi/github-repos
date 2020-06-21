@@ -58,11 +58,17 @@ class MainActivity : AppCompatActivity(), Injectable {
             when (loadState) {
                 GithubPagingReposDataSource.LoadState.LOADING -> binding.loading.visibility =
                     View.VISIBLE
-                GithubPagingReposDataSource.LoadState.SUCCESS -> binding.loading.visibility =
-                    View.GONE
+                is GithubPagingReposDataSource.LoadState.SUCCESS -> {
+                    binding.loading.visibility = View.GONE
+                    loadState.msg?.let {
+                        Toast.makeText(applicationContext, it, Toast.LENGTH_LONG).show()
+                    }
+                }
                 is GithubPagingReposDataSource.LoadState.ERROR -> {
                     binding.loading.visibility = View.GONE
-                    Toast.makeText(applicationContext, loadState.msg, Toast.LENGTH_SHORT).show()
+                    loadState.msg?.let {
+                        Toast.makeText(applicationContext, it, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
