@@ -36,21 +36,10 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/horizontalBar"
-                app:layout_constraintEnd_toStartOf="@+id/favorite"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="NAME" />
-
-            <ImageView
-                android:id="@+id/favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_fav_unselected"
-                tools:visibility="visible" />
 
             <View
                 android:id="@+id/horizontalBar"

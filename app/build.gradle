@@ -32,13 +32,24 @@ android {
             buildConfigField "String", "USERNAME", "\"Hatem-tmi\""
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+        release {
+            keyAlias 'githubrepos'
+            keyPassword 'azerty'
+            storeFile file('githubrepos.keystore')
+            storePassword 'azerty'
+        }
+    }
     buildTypes {
         debug {
             debuggable true
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {

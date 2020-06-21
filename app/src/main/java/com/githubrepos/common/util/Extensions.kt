@@ -1,9 +1,5 @@
 package com.githubrepos.common.util
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -23,21 +19,4 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.nonNullObserve(liveData: L, onChan
 fun Disposable.addTo(disposable: CompositeDisposable): Disposable {
     disposable.add(this)
     return this
-}
-
-fun Context.isDeviceConnected(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-
-        object : ConnectivityManager.NetworkCallback() {
-
-        }
-
-        return false
-    } else {
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting == true
-    }
-
 }
